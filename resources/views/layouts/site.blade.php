@@ -18,21 +18,19 @@
                         <span class="icon-bar"></span>
                     </button>
                     <a class="navbar-brand">
-                        @if (Auth::check())
-                            {{ Auth::user()->name }}
-                        @endif
+                        Sistem Inventaris Toko
                     </a>
                 </div>
 
                 <div class="collapse navbar-collapse" id="collapsible-navbar">
                     <ul class="nav navbar-nav">
+                        @if(Auth::check())
                         <li class="{{ Route::currentRouteName() == "dashboard" ? "active" : "" }}"> <a href="{{ route("dashboard") }}">
                                 <span class="glyphicon glyphicon-home"></span>
                                 Dashboard
                             </a>
                         </li>
-                        
-                       <li class="{{ explode(".", Route::currentRouteName())[0] === "item" ? "active" : "" }}">
+                        <li class="{{ explode(".", Route::currentRouteName())[0] === "item" ? "active" : "" }}">
                             <a href="{{ route("category.index") }}" class="dropdown-toggle" data-toggle="dropdown">
                                 <span class="glyphicon glyphicon-list-alt"></span>
                                 Barang
@@ -45,6 +43,7 @@
                                 @endcan
                             </ul>
                         </li>
+                        @endif
                         
                         @can("manage-categories")
                         <li class="{{ explode(".", Route::currentRouteName())[0] === "category" ? "active" : "" }}">
