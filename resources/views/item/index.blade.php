@@ -14,6 +14,12 @@
     @if(null !== Request::session()->get("message"))
     <div class="alert alert-success">
         {{ Request::session()->get("message") }}
+    </div>  
+    @endif
+
+    @if(null !== Request::session()->get("delete_success"))
+    <div class="alert alert-success">
+        {{ Request::session()->get("delete_success") }}
         <a href={{route("item.restore", ["id" => Request::session()->get("deleted_item_id")])}}> Batalkan penghapusan. </a>
 
     </div>  

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 use App\Item;
 use App\Category;
 
@@ -52,27 +54,12 @@ class ItemController extends Controller
             "image" => "required|file|image"
         ])->validate();
 
-        $image_path = $request->image->store("public/images");
-
-        $thumbnail = Image::make($request->image);
-
-        $resize_height = null;
-        $resize_width = null;
-        if ($thumbnail->width() > $thumbnail->height()) {
-            $resize_width = 200;
-        }
-        else {
-            $resize_height = 200;
-        }
-
-        $thumbnail->resize($resize_width, $resize_height, function ($constraint){
-            $constraint->aspectRatio();
-        });
-
-        $filename = $request->image->hashName();
-        $thumbnail->save(storage_path("app/public/thumbnails/$filename"));
+        $filename = $this->storeImage($request->image);
 
         Item::create(array_merge($request->all(), ["image" => $filename]));
+        return redirect()
+            ->route("item.index")
+            ->with("message", "Penambahan barang baru berhasil dilakukan.");
     }
 
     /**
@@ -94,7 +81,10 @@ class ItemController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view("item.edit", [
+            "item" => Item::find($id),
+            "categories" => Category::get()
+        ]);
     }
 
     /**
@@ -106,7 +96,58 @@ class ItemController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validation_rules = [
+            "name" => "required|string|unique:items,name,$id",
+            "category_id" => "required|integer",
+            "description" => "required|string",
+            "stock" => "required|integer|min:0",
+            "price" => "required|integer|min:0"
+        ];
+
+        if ($request->hasFile("image")) {
+            $validation_rules["image"] = "file|image";
+        }
+
+        Validator::make($request->all(), $validation_rules)->validate();
+
+        $item = Item::find($id);
+
+        if ($request->hasFile("image")) {
+            $filename = $this->storeImage($request->image);
+
+            unlink(storage_path("app/public/thumbnails/$item->image"));
+            unlink(storage_path("app/public/images/$item->image"));
+
+            $item->update(["image" => $filename]);
+        }
+
+        return redirect()->route("item.index");
+    }
+
+    private function storeImage($imageFile)
+    {
+        if (!$imageFile->isValid()) {
+            throw new \Exception("Uploaded file is not valid!");
+        }
+
+        /* Store the image and obtain its file path */
+        $savePath = $imageFile->store("public/images");
+
+        /* Create a thumbnail based on the original image */
+        $thumbnail = Image::make($imageFile);
+
+        /* Resize the thumbnail proportionally. */
+        $target_size = 200;
+
+        $thumbnail->resize(null, 200, function ($constraint){
+            $constraint->aspectRatio();
+        });
+
+        /* Save the thumbnail with the same filename as the original file */
+        $filename = $imageFile->hashName();
+        $thumbnail->save(storage_path("app/public/thumbnails/$filename"));
+
+        return $filename;
     }
 
     /**
@@ -122,7 +163,7 @@ class ItemController extends Controller
         return redirect()
             ->back()
             ->with([
-                    "message" => "Anda baru saja menonaktifkan sebuah item bernama \"$item->name\" dengan id $item->id.",
+                    "delete_success" => "Anda baru saja menonaktifkan sebuah item bernama \"$item->name\" dengan id $item->id.",
                     "deleted_item_id" => $id
                 ]);
     }

@@ -28,6 +28,7 @@ Route::group(["middleware" => "auth"], function() {
         Route::post("item/store", "ItemController@store")->name("item.store");
         Route::delete("item/{id}", "ItemController@destroy")->name("item.destroy");
         Route::get("item/{id}/edit", "ItemController@edit")->name("item.edit");
+        Route::patch("item/{id}", "ItemController@update")->name("item.update");
     });
 
     Route::get("item", "ItemController@index")->name("item.index");
