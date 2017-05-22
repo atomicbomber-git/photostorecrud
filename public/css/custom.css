@@ -1,0 +1,9 @@
+div.medium-container {
+    max-width: 600px;
+    margin: auto;
+}
+
+div.small-container {
+    max-width: 450px;
+    margin: auto;
+}
