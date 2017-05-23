@@ -54,11 +54,12 @@ Route::group(["middleware" => "auth"], function() {
     Route::get("invoice", "InvoiceController@index")->name("invoice.index");
     Route::get("invoice/create", "InvoiceController@create")->name("invoice.create");
     Route::post("invoice", "InvoiceController@store")->name("invoice.store");
-    Route::patch("invoice/{invoice}", "InvoiceController@update")->name("invoice.update");
-
 
     Route::get("invoice/{invoice}", "InvoiceController@show")->name("invoice.show")
         ->middleware("can:update-invoices,invoice");
+    Route::patch("invoice/{invoice}", "InvoiceController@update")->name("invoice.update")
+        ->middleware("can:update-invoices,invoice");
+
 
     /*---Invoice item related routes---*/
     Route::get("invoice_item", "InvoiceItemController@index")->name("invoice.item.index");
