@@ -44,6 +44,19 @@
                             </ul>
                         </li>
                         @endif
+
+                        @if(Auth::check())
+                        <li class="{{ explode(".", Route::currentRouteName())[0] === "invoice" ? "active" : "" }}">
+                            <a class="dropdown-toggle" data-toggle="dropdown">
+                                <span class="glyphicon glyphicon-usd"></span>
+                                Invoice
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li> <a href="{{ route("invoice.index") }}"> Semua Invoice </a> </li>
+                                <li> <a href="{{ route("invoice.create") }}"> Buat Invoice </a> </li>
+                            </ul>
+                        </li>
+                        @endif
                         
                         @can("manage-categories")
                         <li class="{{ explode(".", Route::currentRouteName())[0] === "category" ? "active" : "" }}">

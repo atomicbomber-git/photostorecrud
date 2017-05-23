@@ -19,12 +19,13 @@ class CreateItemsTable extends Migration
             $table->string("description")->nullable();
             $table->integer("stock")->unsigned();
             $table->decimal("price", 19, 4)->unsigned();
-            $table->integer("category_id")->unsigned();
+            $table->integer("category_id")->unsigned()->nullable();
             $table->string("image")->nullable();
             $table->string("thumbnail")->nullable();
             $table->timestamps();
+
             $table->softDeletes();
-            $table->foreign("category_id")->references("id")->on("categories")->onDelete("cascade");
+            $table->foreign("category_id")->references("id")->on("categories")->onDelete("set null");
         });
     }
 

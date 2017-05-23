@@ -38,8 +38,13 @@
             <div class="thumbnail">
                 <img src="{{ asset("storage/thumbnails/$item->image") }}">
                 <div class="caption">
-                    <h3> {{ $item->name }} </h3>
-                    <p> {{ $item->description }} </p>
+                    <h2 style="text-align: center;"> {{ strtoupper($item->name) }} </h2>
+                    <h5> <strong> Harga: </strong> </h5>
+                    <p> {{ $item->formattedPrice() }} </p>
+                    <h5> <strong> Stok: </strong> </h5>
+                    <p> {{ $item->stock }} </p>
+                    <h5> <strong> Keterangan: </strong> </h5>
+                    <p> "{{ $item->description }}" </p>
                     <p>
                         <div style="text-align: right">
                             <a class="btn btn-default btn-xs" href="{{ route("item.show", ["id" => $item->id]) }}">

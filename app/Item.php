@@ -14,5 +14,11 @@ class Item extends Model
         return $this->hasOne("App\Category");
     }
 
+    public function formattedPrice()
+    {
+        return "Rp. " . number_format($this->price, 2, ",", ".");
+    }
+
+
     protected $fillable = ["name", "stock", "price", "description", "category_id", "image"];
 }

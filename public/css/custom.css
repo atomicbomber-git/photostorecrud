@@ -1,4 +1,9 @@
 div.medium-container {
+    max-width: 800px;
+    margin: auto;
+}
+
+div.medium-container {
     max-width: 600px;
     margin: auto;
 }

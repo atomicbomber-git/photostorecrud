@@ -13,7 +13,7 @@
 
         <form id="register-form" method="POST" action={{ route("register") }}>
             <div class="form-group {{ $errors->has("name") ? "has-error" : "" }}">
-                <label class="control-label"> Nama Lengkap </label>
+                <label class="control-label"> Nama Lengkap: </label>
                 <input value="{{ old("name") }}" class="form-control" type="text" name="name" autofocus>
                 @if ($errors->has("name"))
                     <span class="help-block"> {{ $errors->first("name") }} </span>
@@ -21,7 +21,7 @@
             </div>
 
             <div class="form-group {{ $errors->has("username") ? "has-error" : "" }}">
-                <label class="control-label"> Nama Pengguna </label>
+                <label class="control-label"> Nama Pengguna: </label>
                 <input value="{{ old("username") }}" class="form-control" type="text" name="username" autofocus>
                 @if ($errors->has("username"))
                     <span class="help-block"> {{ $errors->first("username") }} </span>
@@ -29,7 +29,7 @@
             </div>
 
             <div class="form-group {{ $errors->has("privilege") ? "has-error" : "" }}">
-                <label class="control-label"> Status Pengguna </label>
+                <label class="control-label"> Status Pengguna: </label>
 
                 <select class="form-control" name="privilege">
                     <option value="CLERK"> Pegawai </option>
@@ -43,7 +43,7 @@
             </div>
 
             <div class="form-group {{ $errors->has("password") ? "has-error" : "" }}">
-                <label class="control-label"> Kata Sandi </label>
+                <label class="control-label"> Kata Sandi: </label>
                 <input class="form-control" type="password" name="password">
                 @if ($errors->has("password"))
                     <span class="help-block"> {{ $errors->first("password") }} </span>
@@ -51,7 +51,7 @@
             </div>
 
             <div class="form-group {{ $errors->has("password_confirmation") ? "has-error" : "" }}">
-                <label class="control-label"> Ulangi Kata Sandi </label>
+                <label class="control-label"> Ulangi Kata Sandi: </label>
                 <input class="form-control" type="password" name="password_confirmation">
                 @if ($errors->has("password_confirmation"))
                     <span class="help-block"> {{ $errors->first("password_confirmation") }} </span>
