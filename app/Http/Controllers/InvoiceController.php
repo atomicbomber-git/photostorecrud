@@ -37,16 +37,26 @@ class InvoiceController extends Controller
 
     public function store(Request $request)
     {
-        Validator::make($request->all(), [
-            "customer_name" => "string",
-            "customer_phone" => "string",
-            "customer_addess" => "string"
-        ])->validate();
-
+        $this->validateInvoiceData($request->all());
         Invoice::create(array_merge($request->all(), ["user_id" => Auth::id()]));
 
         return redirect()
             ->route("invoice.index")
-            ->with("message", "Invoice baru berhasil dibuat");
+            ->with("message", "Invoice baru berhasil dibuat.");
+    }
+    public function update(Request $request, Invoice $invoice)
+    {
+        $this->validateInvoiceData($request->all());
+        $invoice->update($request->all());
+        return back()->with("message", "Data invoice berhasil diubah.");
+    }
+
+    private function validateInvoiceData($invoiceData)
+    {
+        Validator::make($invoiceData, [
+            "customer_name" => "string",
+            "customer_phone" => "string",
+            "customer_addess" => "string"
+        ])->validate();
     }
 }

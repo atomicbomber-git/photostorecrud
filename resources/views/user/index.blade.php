@@ -22,6 +22,13 @@
         <div class="well well-sm">
             <strong> Keterangan: </strong> Baris yang berwarna biru melambangkan data pengguna Anda sendiri
         </div>
+        
+        <div style="text-align: right; padding: 6px">
+            <a href="{{ route("user.create") }}" class="btn btn-default btn-xs">
+                Tambahkan Pengguna Baru
+                <span class="glyphicon glyphicon-plus"></span>
+            </a>
+        </div>
 
         <div class="table-responsive">
             <table class="table table-condensed table-striped">

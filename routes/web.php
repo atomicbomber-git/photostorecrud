@@ -54,6 +54,7 @@ Route::group(["middleware" => "auth"], function() {
     Route::get("invoice", "InvoiceController@index")->name("invoice.index");
     Route::get("invoice/create", "InvoiceController@create")->name("invoice.create");
     Route::post("invoice", "InvoiceController@store")->name("invoice.store");
+    Route::patch("invoice/{invoice}", "InvoiceController@update")->name("invoice.update");
 
 
     Route::get("invoice/{invoice}", "InvoiceController@show")->name("invoice.show")
@@ -63,7 +64,7 @@ Route::group(["middleware" => "auth"], function() {
     Route::get("invoice_item", "InvoiceItemController@index")->name("invoice.item.index");
     Route::post("invoice_item", "InvoiceItemController@store")->name("invoice.item.store");
     Route::delete("invoice_item/{id}", "InvoiceItemController@destroy")->name("invoice.item.destroy");
-    Route::patch("invoice_item/{id}", "InvoiceItemController@update")->name("invoice.item.update");
+    Route::patch("invoice_item/{invoice}", "InvoiceItemController@update")->name("invoice.item.update");
 });
 
 Route::get("error/403", "ErrorController@unauthorized")->name("error.403");
