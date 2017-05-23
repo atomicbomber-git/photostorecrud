@@ -33,8 +33,8 @@
                         <th> No. </th>
                         <th> Nama Pelanggan </th>
                         <th> Alamat Pelanggan </th>
-                        <th> No. Telepon Pelanggan </th>
                         <th> Waktu / Tanggal </th>
+                        <th> No. Telepon Pelanggan </th>
                         <th> Nama Penanggungjawab </th>
                         <th> Kendali </th>
                     </tr>
