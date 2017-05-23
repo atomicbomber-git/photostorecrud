@@ -12,15 +12,19 @@ class InvoiceController extends Controller
 {
     public function index()
     {
+        $invoices = null;
+        if (Auth::user()->isClerk())
+            $invoices = Invoice::where("user_id", Auth::id())->get();
+        else
+            $invoices = Invoice::get();
+
         return view("invoice.index", [
-            "invoices" => Invoice::get()
+            "invoices" => $invoices
         ]);
     }
 
     public function show(Request $request, Invoice $invoice)
     {
-        return response()->json($invoice);
-
         return view("invoice.show", [
             "invoice" => $invoice
         ]);
