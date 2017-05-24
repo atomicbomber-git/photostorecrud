@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 
 use App\Invoice;
+use App\InvoiceItem;
+use App\Item;
 
 class InvoiceController extends Controller
 {
@@ -25,8 +27,17 @@ class InvoiceController extends Controller
 
     public function show(Request $request, Invoice $invoice)
     {
+        $invoiceitems = InvoiceItem::get();
+
+        $total = $invoiceitems->reduce(function ($carry, $invoice_item) {
+            return $carry + ($invoice_item->quantity * $invoice_item->item->price);
+        }, 0);
+
         return view("invoice.show", [
-            "invoice" => $invoice
+            "invoice" => $invoice,
+            "items" => Item::get(["id", "name"]),
+            "invoiceitems" => $invoiceitems,
+            "total" => "Rp. " . number_format($total, 2, ".", ",")
         ]);
     }
 

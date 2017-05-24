@@ -59,7 +59,7 @@ return [
     'mimes'                => 'The :attribute must be a file of type: :values.',
     'mimetypes'            => 'The :attribute must be a file of type: :values.',
     'min'                  => [
-        'numeric' => 'The :attribute must be at least :min.',
+        'numeric' => 'Isi dari kolom ini minimal bernilai :min.',
         'file'    => 'The :attribute must be at least :min kilobytes.',
         'string'  => 'Panjang data yang dimasukkan ke kolom ini minimal :min karakter',
         'array'   => 'The :attribute must have at least :min items.',

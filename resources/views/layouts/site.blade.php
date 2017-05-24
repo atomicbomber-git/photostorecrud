@@ -5,6 +5,7 @@
         <title> @yield("title") </title>
         <link rel="stylesheet" type="text/css" href="{{ asset("css/bootstrap.min.css") }}">
         <link rel="stylesheet" type="text/css" href="{{ asset("css/custom.css") }}">
+        @yield("extra-head")
     </head>
 
     <body>

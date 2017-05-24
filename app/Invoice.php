@@ -18,6 +18,11 @@ class Invoice extends Model
         return $this->belongsTo("App\User");
     }
 
+    public function invoiceitems()
+    {
+        return $this->hasMany("App\InvoiceItem");
+    }
+
     protected $fillable = [
         "customer_name", "customer_phone", "customer_address", "user_id"
     ];

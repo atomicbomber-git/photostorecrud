@@ -12,3 +12,15 @@ div.small-container {
     max-width: 450px;
     margin: auto;
 }
+
+th.numeric, td.numeric {
+    text-align: right;
+}
+
+th.control, td.control {
+    text-align: center;
+}
+
+form.inline-form {
+    display: inline-block;
+}

@@ -16,7 +16,6 @@ class CreateInvoiceItemsTable extends Migration
         Schema::create('invoice_items', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->string("name");
             $table->integer("quantity")->unsigned();
             $table->integer("item_id")->unsigned();
             $table->foreign("item_id")->references("id")->on("items")
