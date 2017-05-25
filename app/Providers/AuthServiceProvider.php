@@ -47,5 +47,9 @@ class AuthServiceProvider extends ServiceProvider
 
             return $invoice->user->id == $user->id;
         });
+
+        Gate::define("access-reports", function ($user) {
+            return $user->isAdmin();
+        });
     }
 }

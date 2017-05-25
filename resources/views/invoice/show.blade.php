@@ -45,7 +45,7 @@
 
                     @slot("footer")
                     <div style="text-align: right">
-                        <button type="submit" form="invoice-update-form" class="btn btn-primary">
+                        <button type="submit" form="invoice-update-form" class="btn btn-primary btn-sm">
                             Ubah Data Invoice
                             <span class="glyphicon glyphicon-ok"></span>
                         </button>
@@ -70,7 +70,7 @@
 
                 <fieldset>
                     <legend> Tambahkan Item ke Invoice </legend>
-                    <form id="invoice-item-add-form" method="POST" action="{{ route("invoice.item.store") }}">
+                    <form id="invoice-item-add-form" method="POST" action="{{ route("invoice.item.store", ["id" => $invoice->id]) }}">
                         <div class="form-group">
                             <label class="control-label"> Nama Item: </label>
                             <select class="form-control" name="item_id">
@@ -92,7 +92,7 @@
 
                         <div style="text-align: right;" class="form-group">
                             <button class="btn btn-primary btn-sm">
-                                Tambahkan
+                                Tambahkan Item ke Invoice
                                 <span class="glyphicon glyphicon-plus"></span>
                             </button>
                         </div>
@@ -108,11 +108,18 @@
                         </div>
                     @endif
 
+                    @if (session("message"))
+                        <div class="alert alert-danger">
+                            {{ session("message") }}
+                        </div>
+                    @endif
+
                     <table class="table table-condensed table-striped table-hover">
                         <thead>
                             <tr>
                                 <th> No. </th>
                                 <th> Nama Item </th>
+                                <th class="numeric"> Stock </th>
                                 <th class="numeric"> Jumlah </th>
                                 <th class="numeric"> Harga </th>
                                 <th class="numeric"> Subtotal </th>
@@ -124,9 +131,10 @@
                             <tr>
                                 <td> {{ $loop->iteration }}. </td>
                                 <td> {{ $invoiceitem->item->name }} </td>
-                                <td class="numeric">
+                                <td class="numeric"> {{ $invoiceitem->item->stock }} </td>
+                                <td>
                                     <form id="update-quantity-form" action="{{ route("invoice.item.update_quantity", ["id" => $invoiceitem->id]) }}" method="POST">
-                                        <input type="number" name="update_quantity" value="{{ $invoiceitem->quantity }}">
+                                        <input style="max-width: 50px" class="numeric" type="number" name="update_quantity" value="{{ $invoiceitem->quantity }}">
                                         {{ csrf_field() }}
                                         {{ method_field("PATCH") }}
                                     </form>
@@ -136,7 +144,7 @@
                                 <td class="control">
                                     <button form="update-quantity-form" class="btn btn-default btn-xs">
                                         <span class="glyphicon glyphicon-pencil"></span>
-                                        Perbaharui Jumlah
+                                        Perbaharui
                                     </button>
                                     <form class="inline-form" method="POST" action="{{ route("invoice.item.destroy", ["id" => $invoiceitem->id]) }}">
                                         <button class="btn btn-danger btn-xs"> 
@@ -152,7 +160,7 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <th colspan="4" style="text-align: right;">
+                                <th colspan="5" style="text-align: right;">
                                     Total:
                                 </th>
                                 <th class="numeric success">
@@ -161,6 +169,14 @@
                             </tr>
                         </tfoot>
                     </table>
+                    <form style="text-align: right;" method="POST" action="{{ route("invoice.finish", ["id" => $invoice->id]) }}">
+                        <button class="btn btn-primary btn-sm">
+                            Tandai Sebagai Selesai
+                            <span class="glyphicon glyphicon-ok"></span>
+                        </button>
+                        {{ csrf_field() }}
+                        {{ method_field("PATCH") }}
+                    </form>
                 </fieldset>
 
                 @endcomponent

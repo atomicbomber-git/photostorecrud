@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use App\Item;
 use App\Category;
+use App\InvoiceItem;
 
 use Image;
 
@@ -50,7 +51,7 @@ class ItemController extends Controller
             "category_id" => "required|integer",
             "description" => "required|string",
             "stock" => "required|integer|min:0",
-            "price" => "required|integer|min:0",
+            "price" => "required|regex:/[\d]{2}.[\d]{2}/|min:0",
             "image" => "required|file|image"
         ])->validate();
 
@@ -101,7 +102,7 @@ class ItemController extends Controller
             "category_id" => "required|integer",
             "description" => "required|string",
             "stock" => "required|integer|min:0",
-            "price" => "required|integer|min:0"
+            "price" => "required|regex:/[\d]{2}.[\d]{2}/|min:0"
         ];
 
         if ($request->hasFile("image")) {
@@ -111,16 +112,20 @@ class ItemController extends Controller
         Validator::make($request->all(), $validation_rules)->validate();
 
         $item = Item::find($id);
-
+        $data = $request->all();
         if ($request->hasFile("image")) {
             $filename = $this->storeImage($request->image);
 
-            unlink(storage_path("app/public/thumbnails/$item->image"));
-            unlink(storage_path("app/public/images/$item->image"));
+            // Storage::delete(storage_path("app/public/thumbnails/$item->image"));
+            // Storage::delete(storage_path("app/public/images/$item->image"));
 
-            $item->update(["image" => $filename]);
+            Storage::delete("public/thumbnails/$item->image");
+            Storage::delete("public/images/$item->image");
+
+            $data = array_merge($data, ["image" => $filename]);
         }
 
+        $item->update($data);
         return redirect()->route("item.index");
     }
 
@@ -159,18 +164,25 @@ class ItemController extends Controller
     public function destroy($id)
     {
         $item = Item::find($id);
+
+        /* 
+            Delete all invoice items that refers to this item if the associated invoice
+            isn't finished.
+         */
+        $invoiceItems = $item->invoiceItems;
+
+        foreach ($invoiceItems as $invoiceItem) {
+            if ( ! $invoiceItem->invoice->is_finished)
+                $invoiceItem->delete();
+        }
+
+        /* Delete images */
+        unlink(storage_path("app/public/thumbnails/$item->image"));
+        unlink(storage_path("app/public/images/$item->image"));
+
         $item->delete();
         return redirect()
             ->back()
-            ->with([
-                    "delete_success" => "Anda baru saja menonaktifkan sebuah item bernama \"$item->name\" dengan id $item->id.",
-                    "deleted_item_id" => $id
-                ]);
-    }
-
-    public function restore($id)
-    {
-        Item::withTrashed()->find($id)->restore();
-        return redirect()->back();
+            ->with("message", "Penghapusan item berhasil dilakukan!");
     }
 }

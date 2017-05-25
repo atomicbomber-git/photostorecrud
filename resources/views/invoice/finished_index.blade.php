@@ -10,7 +10,7 @@
 
         @slot("title")
         <span class="glyphicon glyphicon-list"> </span>
-        Daftar Seluruh Invoice Pending
+        Daftar Seluruh Invoice Selesai
         @endslot
 
         @if(null !== Request::session()->get("message"))

@@ -13,7 +13,7 @@ class InvoiceItem extends Model
 
     public function item()
     {
-        return $this->hasOne("App\Item", "id", "item_id");
+        return $this->belongsTo("App\Item");
     }
 
     public function formattedSubtotal()

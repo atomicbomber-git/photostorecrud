@@ -1,8 +1,6 @@
 @extends("layouts.site")
 
-@section("title")
-Daftar Seluruh Kategori
-@endsection
+@section("title", "Daftar Seluruh Kategori")
 
 @section("content")
 <div class="container">
@@ -35,7 +33,7 @@ Daftar Seluruh Kategori
                         <th> No. </th>
                         <th> Nama </th>
                         <th> Deskripsi </th>
-                        <th> Kendali </th>
+                        <th class="control"> Kendali </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -44,7 +42,7 @@ Daftar Seluruh Kategori
                         <td> {{ $loop->iteration }}. </td>
                         <td> {{ $category->name }} </td>
                         <td> {{ $category->description }} </td>
-                        <td style="min-width: 150px">
+                        <td class="control" style="min-width: 150px">
                             <a class="btn btn-default btn-xs" href="{{ route("category.edit", ["id" => $category->id]) }}"> Sunting <span class="glyphicon glyphicon-pencil"> </span> </a>
                             
                             <form method="POST" style="display: inline-block;" action="{{ route("category.destroy", ["id" => $category->id]) }}">

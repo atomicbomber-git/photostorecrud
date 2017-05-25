@@ -52,19 +52,27 @@ Route::group(["middleware" => "auth"], function() {
 
     /*---Invoice related routes---*/
     Route::get("invoice", "InvoiceController@index")->name("invoice.index");
+    Route::get("invoice/finished", "InvoiceController@finishedIndex")->name("invoice.finishedIndex");
     Route::get("invoice/create", "InvoiceController@create")->name("invoice.create");
     Route::post("invoice", "InvoiceController@store")->name("invoice.store");
     Route::get("invoice/{invoice}", "InvoiceController@show")->name("invoice.show")
         ->middleware("can:update-invoices,invoice");
     Route::patch("invoice/{invoice}", "InvoiceController@update")->name("invoice.update")
         ->middleware("can:update-invoices,invoice");
+    Route::patch("invoice/finish/{invoice}", "InvoiceController@finish")->name("invoice.finish");
 
     /*---Invoice item related routes---*/
     Route::get("invoice_item", "InvoiceItemController@index")->name("invoice.item.index");
-    Route::post("invoice_item/store", "InvoiceItemController@store")->name("invoice.item.store");
+    Route::post("invoice_item/store/{invoice_id}", "InvoiceItemController@store")->name("invoice.item.store");
     Route::delete("invoice_item/{invoiceitem}", "InvoiceItemController@destroy")->name("invoice.item.destroy");
     Route::patch("invoice_item/update_quantity/{invoiceitem}", "InvoiceItemController@updateQuantity")->name("invoice.item.update_quantity");
     Route::patch("invoice_item/{invoiceitem}", "InvoiceItemController@update")->name("invoice.item.update");
+
+    /*---Report related routes---*/
+    Route::group(["middleware" => "can:access-reports"], function() {
+        Route::get("report", "ReportController@index")->name("report.index");
+        Route::post("report", "ReportController@show")->name("report.show");
+    });
 });
 
 Route::get("error/403", "ErrorController@unauthorized")->name("error.403");

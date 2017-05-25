@@ -26,7 +26,8 @@
                 <div class="collapse navbar-collapse" id="collapsible-navbar">
                     <ul class="nav navbar-nav">
                         @if(Auth::check())
-                        <li class="{{ Route::currentRouteName() == "dashboard" ? "active" : "" }}"> <a href="{{ route("dashboard") }}">
+                        <li class="{{ Route::currentRouteName() == "dashboard" ? "active" : "" }}"> 
+                            <a href="{{ route("dashboard") }}">
                                 <span class="glyphicon glyphicon-home"></span>
                                 Dashboard
                             </a>
@@ -53,11 +54,21 @@
                                 Invoice
                             </a>
                             <ul class="dropdown-menu">
-                                <li> <a href="{{ route("invoice.index") }}"> Semua Invoice </a> </li>
-                                <li> <a href="{{ route("invoice.create") }}"> Buat Invoice </a> </li>
+                                <li> <a href="{{ route("invoice.index") }}"> Invoice Pending </a> </li>
+                                <li> <a href="{{ route("invoice.finishedIndex") }}"> Invoice Selesai </a> </li>
+                                <li> <a href="{{ route("invoice.create") }}"> Buat Invoice Baru </a> </li>
                             </ul>
                         </li>
                         @endif
+
+                        @can("access-reports")
+                        <li class="{{ Route::currentRouteName() == "report.index" ? "active" : "" }}">
+                            <a href="{{ route("report.index") }}">
+                                <span class="glyphicon glyphicon-book"></span>
+                                Laporan
+                            </a>
+                        </li>
+                        @endcan
                         
                         @can("manage-categories")
                         <li class="{{ explode(".", Route::currentRouteName())[0] === "category" ? "active" : "" }}">

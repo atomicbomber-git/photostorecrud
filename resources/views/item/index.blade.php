@@ -46,11 +46,6 @@
                     <p> "{{ $item->description }}" </p>
                     <p>
                         <div style="text-align: right">
-                            <a class="btn btn-default btn-xs" href="{{ route("item.show", ["id" => $item->id]) }}">
-                                Detail
-                                <span class="glyphicon glyphicon-list-alt"></span>
-                            </a>
-
                             @can("manage-items")
                             <a class="btn btn-default btn-xs" href="{{ route("item.edit", ["id" => $item->id]) }}">
                                 Sunting
@@ -58,7 +53,7 @@
                             </a>
                             <form style="display: inline-block;" method="POST" action="{{ route("item.destroy", ["id" => $item->id]) }}">
                                 <button class="btn btn-danger btn-xs">
-                                    Nonaktifkan
+                                    Hapus
                                     <span class="glyphicon glyphicon-trash"></span>
                                     {{ csrf_field() }}
                                     {{ method_field("DELETE") }}

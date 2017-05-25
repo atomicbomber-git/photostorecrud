@@ -23,6 +23,18 @@ class Invoice extends Model
         return $this->hasMany("App\InvoiceItem");
     }
 
+    public function setAsFinished()
+    {
+        $this->is_finished = 1;
+        $this->save();
+    }
+
+    public function setAsUnfinished()
+    {
+        $this->is_finished = 0;
+        $this->save();
+    }
+
     protected $fillable = [
         "customer_name", "customer_phone", "customer_address", "user_id"
     ];

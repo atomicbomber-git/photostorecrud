@@ -24,7 +24,6 @@ class CreateItemsTable extends Migration
             $table->string("thumbnail")->nullable();
             $table->timestamps();
 
-            $table->softDeletes();
             $table->foreign("category_id")->references("id")->on("categories")->onDelete("set null");
         });
     }

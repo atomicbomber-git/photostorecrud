@@ -13,7 +13,7 @@ div.small-container {
     margin: auto;
 }
 
-th.numeric, td.numeric {
+input.numeric, th.numeric, td.numeric {
     text-align: right;
 }
 

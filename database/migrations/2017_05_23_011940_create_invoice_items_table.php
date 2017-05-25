@@ -17,9 +17,9 @@ class CreateInvoiceItemsTable extends Migration
             $table->increments('id');
 
             $table->integer("quantity")->unsigned();
-            $table->integer("item_id")->unsigned();
+            $table->integer("item_id")->unsigned()->nullable();
             $table->foreign("item_id")->references("id")->on("items")
-                ->onDelete("cascade");
+                ->onDelete("set null");
 
             $table->integer("invoice_id")->unsigned()->nullable();
             $table->foreign("invoice_id")->references("id")->on("invoices")
