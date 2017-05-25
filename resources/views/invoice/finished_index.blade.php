@@ -45,13 +45,13 @@
                         <td> {{ $loop->iteration }}. </td>
                         <td> {{ $invoice->customer_name }} </td>
                         <td> {{ $invoice->customer_address }} </td>
-                        <td> {{ $invoice->localDate() }} </td>
+                        <td> {{ $invoice->localDatetime() }} </td>
                         <td> {{ $invoice->customer_phone }} </td>
                         <td> {{ $invoice->user ? $invoice->user->name : "" }} </td>
                         <td>
-                            <a class="btn btn-default btn-xs" href="{{ route("invoice.show", ["id" => $invoice->id]) }}">
-                                Kelola
-                                <span class="glyphicon glyphicon-list"></span>
+                            <a class="btn btn-default btn-xs" href="{{ route("invoice.pdf", ["id" => $invoice->id]) }}">
+                                Cetak Invoice
+                                <span class="glyphicon glyphicon-print"></span>
                             </a>
                         </td>
                     </tr>

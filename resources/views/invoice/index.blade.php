@@ -45,7 +45,7 @@
                         <td> {{ $loop->iteration }}. </td>
                         <td> {{ $invoice->customer_name }} </td>
                         <td> {{ $invoice->customer_address }} </td>
-                        <td> {{ $invoice->localDate() }} </td>
+                        <td> {{ $invoice->localDatetime() }} </td>
                         <td> {{ $invoice->customer_phone }} </td>
                         <td> {{ $invoice->user ? $invoice->user->name : "" }} </td>
                         <td>

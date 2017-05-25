@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use App\Invoice;
 use App\InvoiceItem;
 use App\Item;
+use PDF;
 
 class InvoiceController extends Controller
 {
@@ -21,7 +22,9 @@ class InvoiceController extends Controller
         if (Auth::user()->isClerk())
             $whereRules["user_id"] = Auth::id();
 
-        $invoices = Invoice::where($whereRules)->get();
+        $invoices = Invoice::where($whereRules)
+            ->orderBy("updated_at", "DESC")
+            ->get();
 
         return view("invoice.index", [
             "invoices" => $invoices
@@ -36,9 +39,11 @@ class InvoiceController extends Controller
         if (Auth::user()->isClerk())
             $whereRules["user_id"] = Auth::id();
 
-        $invoices = Invoice::where($whereRules)->get();
+        $invoices = Invoice::where($whereRules)
+            ->orderBy("updated_at", "DESC")
+            ->get();
 
-        return view("invoice.index", [
+        return view("invoice.finished_index", [
             "invoices" => $invoices
         ]);
     }
@@ -83,6 +88,12 @@ class InvoiceController extends Controller
 
     public function finish(Request $request, Invoice $invoice)
     {
+        if ( ! $invoice->invoiceitems->count()) {
+            return redirect()
+                ->route("invoice.show", ["id" => $invoice->id])
+                ->withErrors(["invoice_item" => "Invoice masih kosong. Minimal terdapat satu item untuk setiap invoice"]);
+        }
+
         DB::beginTransaction();
 
         try {
@@ -109,6 +120,13 @@ class InvoiceController extends Controller
         /* Mark invoice as finished */
         $invoice->setAsFinished();
         return redirect()->route("invoice.index");
+    }
+
+    public function pdf(Request $request, Invoice $invoice)
+    {
+        return PDF::loadView("invoice.pdf", ["invoice" => $invoice])
+            ->setPaper("a5", "landscape")
+            ->stream("invoice.pdf");
     }
 
     private function validateInvoiceData($invoiceData)

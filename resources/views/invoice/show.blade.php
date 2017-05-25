@@ -101,17 +101,19 @@
 
                 <fieldset>
                     <legend> Daftar Item Invoice </legend>
-
-                    @if ($errors->has("update_quantity"))
-                        <div class="alert alert-danger">
-                            {{ $errors->first("update_quantity") }}
-                        </div>
+                    
+                    @if($errors->has("update_quantity"))
+                    <div class="alert alert-danger">
+                        {{ $errors->first("update_quantity") }}
+                    </div>
                     @endif
 
-                    @if (session("message"))
-                        <div class="alert alert-danger">
-                            {{ session("message") }}
-                        </div>
+                    @if ($errors->has("invoice_item"))
+                        @foreach ($errors->get("invoice_item") as $error)
+                            <div class="alert alert-danger">
+                                {{ $error }}
+                            </div>
+                        @endforeach
                     @endif
 
                     <table class="table table-condensed table-striped table-hover">

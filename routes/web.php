@@ -53,6 +53,7 @@ Route::group(["middleware" => "auth"], function() {
     /*---Invoice related routes---*/
     Route::get("invoice", "InvoiceController@index")->name("invoice.index");
     Route::get("invoice/finished", "InvoiceController@finishedIndex")->name("invoice.finishedIndex");
+    Route::get("invoice/pdf/{invoice}", "InvoiceController@pdf")->name("invoice.pdf");
     Route::get("invoice/create", "InvoiceController@create")->name("invoice.create");
     Route::post("invoice", "InvoiceController@store")->name("invoice.store");
     Route::get("invoice/{invoice}", "InvoiceController@show")->name("invoice.show")
@@ -71,7 +72,7 @@ Route::group(["middleware" => "auth"], function() {
     /*---Report related routes---*/
     Route::group(["middleware" => "can:access-reports"], function() {
         Route::get("report", "ReportController@index")->name("report.index");
-        Route::post("report", "ReportController@show")->name("report.show");
+        Route::get("report/pdf", "ReportController@pdf")->name("report.pdf");
     });
 });
 

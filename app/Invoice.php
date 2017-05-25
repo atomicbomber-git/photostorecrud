@@ -7,10 +7,16 @@ use Jenssegers\Date\Date;
 
 class Invoice extends Model
 {
-    public function localDate()
+    public function localDatetime()
     {
         $date = new Date($this->created_at);
         return $date->format('l, j F Y H:i');
+    }
+
+    public function localDate()
+    {
+        $date = new Date($this->created_at);
+        return $date->format('l, j F Y');
     }
 
     public function user()
@@ -33,6 +39,17 @@ class Invoice extends Model
     {
         $this->is_finished = 0;
         $this->save();
+    }
+
+    public function finalSum()
+    {
+        $invoiceitems = $this->invoiceitems;
+
+        $total = $invoiceitems->reduce(function ($carry, $invoice_item) {
+            return $carry + ($invoice_item->quantity * $invoice_item->price);
+        }, 0);
+
+        return $total;
     }
 
     protected $fillable = [
