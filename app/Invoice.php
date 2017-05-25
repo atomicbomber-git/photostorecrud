@@ -52,6 +52,11 @@ class Invoice extends Model
         return $total;
     }
 
+    public function code()
+    {
+        return $this->created_at->format("YmdHis") . $this->id;
+    }
+
     protected $fillable = [
         "customer_name", "customer_phone", "customer_address", "user_id"
     ];
