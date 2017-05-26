@@ -61,6 +61,7 @@ Route::group(["middleware" => "auth"], function() {
     Route::patch("invoice/{invoice}", "InvoiceController@update")->name("invoice.update")
         ->middleware("can:update-invoices,invoice");
     Route::patch("invoice/finish/{invoice}", "InvoiceController@finish")->name("invoice.finish");
+    Route::delete("invoice/{invoice}", "InvoiceController@destroy")->name("invoice.destroy");
 
     /*---Invoice item related routes---*/
     Route::get("invoice_item", "InvoiceItemController@index")->name("invoice.item.index");

@@ -11,6 +11,7 @@ use App\Invoice;
 use App\InvoiceItem;
 use App\Item;
 use PDF;
+use Date;
 
 class InvoiceController extends Controller
 {
@@ -72,7 +73,15 @@ class InvoiceController extends Controller
     public function store(Request $request)
     {
         $this->validateInvoiceData($request->all());
-        Invoice::create(array_merge($request->all(), ["user_id" => Auth::id()]));
+        $formatted_transaction_date = (new Date($request->transaction_date))->format("Y-m-d H:i:s");
+
+        Invoice::create([
+            "customer_name" => $request->customer_name,
+            "customer_phone" => $request->customer_phone,
+            "customer_address" => $request->customer_address,
+            "transaction_date" => $formatted_transaction_date,
+            "user_id" => Auth::id()
+        ]);
 
         return redirect()
             ->route("invoice.index")
@@ -82,7 +91,16 @@ class InvoiceController extends Controller
     public function update(Request $request, Invoice $invoice)
     {
         $this->validateInvoiceData($request->all());
-        $invoice->update($request->all());
+        
+        $formatted_transaction_date = (new Date($request->transaction_date))->format("Y-m-d H:i:s");
+
+        $invoice->update([
+            "customer_name" => $request->customer_name,
+            "customer_phone" => $request->customer_phone,
+            "customer_address" => $request->customer_address,
+            "transaction_date" => $formatted_transaction_date
+        ]);
+
         return back()->with("message", "Data invoice berhasil diubah.");
     }
 
@@ -129,12 +147,21 @@ class InvoiceController extends Controller
             ->stream("invoice.pdf");
     }
 
+    public function destroy(Request $request, Invoice $invoice)
+    {
+        $invoice->delete();
+        return redirect()
+            ->route("invoice.index")
+            ->with("message", "Penghapusan invoice berhasil dilakukan!");
+    }
+
     private function validateInvoiceData($invoiceData)
     {
         Validator::make($invoiceData, [
             "customer_name" => "string",
             "customer_phone" => "string",
-            "customer_addess" => "string"
+            "customer_addess" => "string",
+            "transaction_date" => "required|date_format:d-m-Y H:i:s"
         ])->validate();
     }
 }

@@ -39,7 +39,7 @@ class ReportController extends Controller
         $formatted_end_date = $end_date->addDay()->format("Y-m-d H:i:s");
 
         $invoices = Invoice::where("is_finished", 1)
-            ->whereBetween("created_at", [$formatted_start_date, $formatted_end_date])
+            ->whereBetween("transaction_date", [$formatted_start_date, $formatted_end_date])
             ->get();
 
         $grand_total = $invoices->reduce(function ($carry, $invoice) {

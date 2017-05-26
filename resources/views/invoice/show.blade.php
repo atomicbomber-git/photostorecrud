@@ -2,6 +2,10 @@
 
 @section("title", "Detail Invoice")
 
+@section("extra-head")
+    <link rel="stylesheet" type="text/css" href="{{ asset("css/bootstrap-datetimepicker.min.css") }}">
+@endsection
+
 @section("content")
 <div class="container">
     <div class="row">
@@ -42,6 +46,16 @@
                     "field_type" => "textarea",
                     "value" => $invoice->customer_address
                 ]) @endcomponent
+
+                <div class="form-group {{ $errors->has("transaction_date") ? "has-error" : "" }}">
+                    <label class="control-label"> Tanggal Transaksi </label>
+                    <input class="date-control form-control" type="text" name="transaction_date"
+                        value="{{ old("transaction_date") ?? $invoice->transaction_date->format("d-m-Y H:i:s") }}"
+                        >
+                    @if ( $errors->has("transaction_date") )
+                        <span class="help-block"> {{ $errors->first("transaction_date") }} </span>
+                    @endif
+                </div>
 
                     @slot("footer")
                     <div style="text-align: right">
@@ -171,14 +185,24 @@
                             </tr>
                         </tfoot>
                     </table>
-                    <form style="text-align: right;" method="POST" action="{{ route("invoice.finish", ["id" => $invoice->id]) }}">
-                        <button class="btn btn-primary btn-sm">
-                            Tandai Sebagai Selesai
-                            <span class="glyphicon glyphicon-ok"></span>
-                        </button>
-                        {{ csrf_field() }}
-                        {{ method_field("PATCH") }}
-                    </form>
+                    <div style="text-align: right;">
+                        <form style="display: inline-block;" method="POST" action="{{ route("invoice.destroy", ["id" => $invoice->id]) }}">
+                            <button class="btn btn-danger btn-sm">
+                                Hapus Invoice
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </button>
+                            {{ csrf_field() }}
+                            {{ method_field("DELETE") }}
+                        </form>
+                        <form style="display: inline-block;" method="POST" action="{{ route("invoice.finish", ["id" => $invoice->id]) }}">
+                            <button class="btn btn-primary btn-sm">
+                                Tandai Sebagai Selesai
+                                <span class="glyphicon glyphicon-ok"></span>
+                            </button>
+                            {{ csrf_field() }}
+                            {{ method_field("PATCH") }}
+                        </form>
+                    </div>
                 </fieldset>
 
                 @endcomponent
@@ -187,4 +211,16 @@
     </div>
 </div>
 
+@endsection
+
+@section("script")
+    <script type="text/javascript" src="{{ asset("js/moment-with-locales.js") }}"></script>
+    <script type="text/javascript" src="{{ asset("js/bootstrap-datetimepicker.min.js") }}"></script>
+
+    <script>
+        $("input.date-control").datetimepicker({
+            locale: moment.locale("id"),
+            format: "DD-MM-YYYY HH:mm:ss"
+        });
+    </script>
 @endsection

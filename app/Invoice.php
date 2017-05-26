@@ -9,13 +9,13 @@ class Invoice extends Model
 {
     public function localDatetime()
     {
-        $date = new Date($this->created_at);
+        $date = new Date($this->transaction_date);
         return $date->format('l, j F Y H:i');
     }
 
     public function localDate()
     {
-        $date = new Date($this->created_at);
+        $date = new Date($this->transaction_date);
         return $date->format('l, j F Y');
     }
 
@@ -58,6 +58,10 @@ class Invoice extends Model
     }
 
     protected $fillable = [
-        "customer_name", "customer_phone", "customer_address", "user_id"
+        "customer_name", "customer_phone", "customer_address", "user_id", "transaction_date"
+    ];
+
+    protected $dates = [
+        "created_at", "updated_at", "transaction_date"
     ];
 }
