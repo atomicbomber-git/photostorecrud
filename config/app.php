@@ -165,6 +165,7 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         Jenssegers\Date\DateServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
 
         /*
          * Package Service Providers...

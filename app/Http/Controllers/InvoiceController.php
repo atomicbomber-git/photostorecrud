@@ -17,13 +17,15 @@ class InvoiceController extends Controller
 {
     public function index()
     {
+        $user = Auth::user();
         $whereRules = ["is_finished" => 0];
 
         /* A clerk can only access his own invoices */
-        if (Auth::user()->isClerk())
-            $whereRules["user_id"] = Auth::id();
+        if ($user->isClerk())
+            $whereRules["user_id"] = $user->id;
 
-        $invoices = Invoice::where($whereRules)
+        $invoices = Invoice::with("user")
+            ->where($whereRules)
             ->orderBy("updated_at", "DESC")
             ->get();
 
@@ -42,6 +44,7 @@ class InvoiceController extends Controller
 
         $invoices = Invoice::where($whereRules)
             ->orderBy("updated_at", "DESC")
+            ->with("user")
             ->get();
 
         return view("invoice.finished_index", [
@@ -51,12 +54,12 @@ class InvoiceController extends Controller
 
     public function show(Request $request, Invoice $invoice)
     {
+        $invoice->load("invoiceitems.item");
         $total = $invoice->temporarySum();
 
         return view("invoice.show", [
             "invoice" => $invoice,
             "items" => Item::get(["id", "name"]),
-            "invoiceitems" => $invoice->invoiceitems,
             "total" => "Rp. " . number_format($total, 2, ",", ".")
         ]);
     }

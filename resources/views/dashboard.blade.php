@@ -38,8 +38,15 @@
             @endcomponent
         </div>
         <div class="col-md-9">
+            <div class="jumbotron">
+                <img width="300px" height="auto" style="display: inline-block; margin: auto;" src="{{ asset("images/small_logo.jpg") }}">
+                <h3>
+                    Selamat datang di Sistem Inventori dan Kasir Kawaii Photo Studio.
+                </h3>
+                
+
+                </div>
             <h2>
-                Selamat datang di Sistem Inventori dan Kasir Kawaii Photo Studio.
             </h2>
         </div>
     </div>

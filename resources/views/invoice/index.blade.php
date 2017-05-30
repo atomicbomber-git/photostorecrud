@@ -15,7 +15,7 @@
 
         @if(null !== Request::session()->get("message"))
         <div class="alert alert-success">
-            {{ Request::session()->get("message") }}
+            {{ session("message") }}
         </div>  
         @endif
 
@@ -49,7 +49,7 @@
                         <td> {{ $invoice->customer_phone }} </td>
                         <td> {{ $invoice->user ? $invoice->user->name : "" }} </td>
                         <td>
-                            <a class="btn btn-default btn-xs" href="{{ route("invoice.show", ["id" => $invoice->id]) }}">
+                            <a class="btn btn-default btn-xs" href="{{ route("invoice.show", $invoice) }}">
                                 Kelola
                                 <span class="glyphicon glyphicon-list"></span>
                             </a>

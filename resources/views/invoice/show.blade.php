@@ -171,7 +171,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($invoiceitems as $invoiceitem)
+                            @foreach ($invoice->invoiceitems as $invoiceitem)
                             <tr>
                                 <td> {{ $loop->iteration }}. </td>
                                 <td> {{ $invoiceitem->item->name }} </td>
