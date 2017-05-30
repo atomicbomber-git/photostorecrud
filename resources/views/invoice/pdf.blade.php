@@ -96,6 +96,15 @@
                 <tr>
                     <td class="borderless" colspan="3"></td>
                     <td class="borderless" style="text-align: right; font-weight: bold">
+                        Discount:
+                    </td>
+                    <td class="numeric" style="font-weight: bold">
+                        Rp. {{ number_format($invoice->discount, 2, ",", ".") }}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="borderless" colspan="3"></td>
+                    <td class="borderless" style="text-align: right; font-weight: bold">
                         Total:
                     </td>
                     <td class="numeric" style="font-weight: bold">

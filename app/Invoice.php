@@ -43,13 +43,19 @@ class Invoice extends Model
 
     public function finalSum()
     {
-        $invoiceitems = $this->invoiceitems;
-
-        $total = $invoiceitems->reduce(function ($carry, $invoice_item) {
+        $total = $this->invoiceitems->reduce(function ($carry, $invoice_item) {
             return $carry + ($invoice_item->quantity * $invoice_item->price);
         }, 0);
 
-        return $total;
+        return $total - $this->discount;
+    }
+
+    public function temporarySum() {
+        $total = $this->invoiceitems->reduce(function ($carry, $invoice_item) {
+            return $carry + ($invoice_item->quantity * $invoice_item->item->price);
+        }, 0);
+
+        return $total - $this->discount;
     }
 
     public function code()
@@ -58,7 +64,8 @@ class Invoice extends Model
     }
 
     protected $fillable = [
-        "customer_name", "customer_phone", "customer_address", "user_id", "transaction_date"
+        "customer_name", "customer_phone", "customer_address", "user_id", "transaction_date",
+        "discount"
     ];
 
     protected $dates = [

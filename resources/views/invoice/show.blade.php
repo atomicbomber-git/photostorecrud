@@ -113,6 +113,34 @@
                     </form>
                 </fieldset>
 
+                @can("add-discounts")
+
+                <fieldset>
+                    <legend> Tambahkan Diskon </legend>
+
+                        <form method="POST" action="{{ route("invoice.update_discount", $invoice) }}">
+                            @component("components.form-group", [
+                                "name" => "discount",
+                                "label" => "Diskon: ",
+                                "type" => "number",
+                                "field_type" => "input",
+                                "value" => $invoice->discount
+                            ]) @endcomponent
+
+                            {{ csrf_field() }}
+
+                            <div style="text-align: right;">
+                                <button class="btn btn-primary btn-sm"> Ubah Diskon </button>
+                            </div>
+                                
+                        </form>
+
+                </fieldset>
+
+                @endcan
+
+                
+
                 <fieldset>
                     <legend> Daftar Item Invoice </legend>
                     
@@ -175,6 +203,14 @@
                             @endforeach
                         </tbody>
                         <tfoot>
+                            <tr>
+                                <th colspan="5" style="text-align: right;">
+                                    Discount:
+                                </th>
+                                <th class="numeric success">
+                                    Rp. {{ number_format($invoice->discount, 2, ",", ".") }}
+                                </th>
+                            </tr>
                             <tr>
                                 <th colspan="5" style="text-align: right;">
                                     Total:

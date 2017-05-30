@@ -51,18 +51,21 @@ class InvoiceController extends Controller
 
     public function show(Request $request, Invoice $invoice)
     {
-        $invoiceitems = $invoice->invoiceitems;
-
-        $total = $invoiceitems->reduce(function ($carry, $invoice_item) {
-            return $carry + ($invoice_item->quantity * $invoice_item->item->price);
-        }, 0);
+        $total = $invoice->temporarySum();
 
         return view("invoice.show", [
             "invoice" => $invoice,
             "items" => Item::get(["id", "name"]),
-            "invoiceitems" => $invoiceitems,
+            "invoiceitems" => $invoice->invoiceitems,
             "total" => "Rp. " . number_format($total, 2, ",", ".")
         ]);
+    }
+
+    public function updateDiscount(Request $request, Invoice $invoice)
+    {
+        $invoice->discount = $request->discount;
+        $invoice->save();
+        return back();
     }
 
     public function create()

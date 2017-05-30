@@ -37,6 +37,10 @@ class AuthServiceProvider extends ServiceProvider
             return $user->isAdmin();
         });
 
+        Gate::define("add-discounts", function($user) {
+            return $user->isManager() || $user->isAdmin();
+        });
+
         Gate::define("update-invoices", function($user, $invoice) {
 
             if ($user->isAdmin())

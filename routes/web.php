@@ -62,6 +62,8 @@ Route::group(["middleware" => "auth"], function() {
         ->middleware("can:update-invoices,invoice");
     Route::patch("invoice/finish/{invoice}", "InvoiceController@finish")->name("invoice.finish");
     Route::delete("invoice/{invoice}", "InvoiceController@destroy")->name("invoice.destroy");
+    Route::post("invoice/updateDiscount/{invoice}", "InvoiceController@updateDiscount")->middleware("can:add-discounts")
+        ->name("invoice.update_discount");
 
     /*---Invoice item related routes---*/
     Route::get("invoice_item", "InvoiceItemController@index")->name("invoice.item.index");
@@ -75,6 +77,8 @@ Route::group(["middleware" => "auth"], function() {
         Route::get("report", "ReportController@index")->name("report.index");
         Route::get("report/pdf", "ReportController@pdf")->name("report.pdf");
     });
+
+
 });
 
 Route::get("error/403", "ErrorController@unauthorized")->name("error.403");
