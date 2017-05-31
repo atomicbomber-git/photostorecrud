@@ -143,7 +143,7 @@ class InvoiceController extends Controller
 
         /* Mark invoice as finished */
         $invoice->setAsFinished();
-        return redirect()->route("invoice.index");
+        return redirect()->route("invoice.finishedIndex");
     }
 
     public function pdf(Request $request, Invoice $invoice)
