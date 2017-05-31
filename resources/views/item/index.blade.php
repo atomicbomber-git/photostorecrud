@@ -42,6 +42,8 @@
                     <p> {{ $item->formattedPrice() }} </p>
                     <h5> <strong> Stok: </strong> </h5>
                     <p> {{ $item->stock }} </p>
+                    <h5> <strong> Kategori: </strong> </h5>
+                    <p> {{ $item->category->name }} </p>
                     <h5> <strong> Keterangan: </strong> </h5>
                     <p> "{{ $item->description }}" </p>
                     <p>
