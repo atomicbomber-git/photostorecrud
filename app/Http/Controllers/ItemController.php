@@ -51,7 +51,7 @@ class ItemController extends Controller
             "category_id" => "required|integer",
             "description" => "required|string",
             "stock" => "required|integer|min:0",
-            "price" => "required|regex:/[\d]{2}.[\d]{2}/|min:0",
+            "price" => "required|integer|min:0",
             "image" => "required|file|image"
         ])->validate();
 
@@ -102,7 +102,7 @@ class ItemController extends Controller
             "category_id" => "required|integer",
             "description" => "required|string",
             "stock" => "required|integer|min:0",
-            "price" => "required|regex:/[\d]{2}.[\d]{2}/|min:0"
+            "price" => "required|integer|min:0"
         ];
 
         if ($request->hasFile("image")) {
